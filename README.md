@@ -1,2 +1,2 @@
-# kdb-utilities
-Useful kdb+ utility scripts, usually referenced in our blog posts
+# dbestimate
+Scripts for estimating the size of a database based on assumptions about structure
