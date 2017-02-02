@@ -11,7 +11,7 @@ Once loaded inspect the memsage dictionary for an estimate of memory usage for e
 
 // Defining command line parameters. Inputs are the schema of tables to estimate, number of distinct values
 // and the average string length of string/untyped columns
-params:.Q.def[(`schema`distincts`avgsl)!(`schema; 10000; 15)].Q.opt .z.x
+params:.Q.def[`schema`distincts`avgsl!(`schema; 10000; 15)].Q.opt .z.x
 
 // Count any tables already loaded
 tblcnt:count tables[]
