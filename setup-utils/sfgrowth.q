@@ -1,8 +1,12 @@
-distinctratio:{[d] 
+distinctratio:{[d]
+   // Create a column, distinctpercent, which is a percentage of distinct values to total values for a given day 
    `distinctpercent xdesc update distinctpercent:100*distinctcount%counter from 
 	raze {[d;x] 
    	   	raze {[t;d;c] 
+			// Create a table containing counter (table count), distinctcount (number of distinct values)
+			// column name and table name.
 			update colname:c, tab:t from 
+			// Extract symbol type columns and perform a functional select for each table in tables[] to extract count and distinct count
 			eval (?;t;enlist enlist (=;`date;(last;d));0b;`counter`distinctcount!((#:;c);(#:;(?:;c))))}[x;d] each exec c from 
 			meta value x where (t="s")or c=`sym}[d;] each tables[]}
 
