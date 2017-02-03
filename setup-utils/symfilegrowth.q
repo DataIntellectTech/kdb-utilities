@@ -39,3 +39,5 @@ growthrate:{[sd;ed]
   
    // Filter out initial date, calculate percentage new, order by percentage new & reorder columns
    `col`date`tab`cnt`total`percent xcols `percent xdesc update percent:100*cnt%total from select from t where date > sd}
+
+\d .
