@@ -8,6 +8,6 @@ trade:([] time:`timestamp$(); `g#sym:`symbol$(); src:`symbol$(); price:`float$()
 t:([]date:`date$(); size:`long$(); price:`float$(); exch:`g#`char$());
 
 // A dictionary of tables and counts.
-counts:(!) . flip (	(`trade;1000000);
-			(`quote;10000000);
-			(`t;1000000))
+counts:(!) . flip (	(`trade;600000);
+			(`quote;600000);
+			(`t;600000))

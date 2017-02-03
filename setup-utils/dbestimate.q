@@ -13,11 +13,13 @@ Once loaded inspect the memsage dictionary for an estimate of memory usage for e
 // and the average string length of string/untyped columns
 params:.Q.def[`schema`distincts`avgsl!(`schema; 10000; 15)].Q.opt .z.x
 
+ptrsize:$["32"~1_string .z.o;4;8]
+
 // Count any tables already loaded
 tblcnt:count tables[]
 
 // Load schema file. If no schema exists, flag error and exit process
-@[{system"l ",string x;};params[`schema];{-2"Error: ", x;exit 2}]
+@[{system"l ",string x;};params[`schema];{-2"Error: ", raze x, ". \nScript usage (optional parameters in square brackets): q dbestimate. -schema schema.q [-distincts 10000] [-avgsl 15]";exit 2}]
 
 // Checks if schema file has defined any tables
 if[0=(count tables[])-tblcnt; -2"Error: No tables defined in schema file, exiting script"; exit 2]
@@ -25,6 +27,7 @@ if[0=(count tables[])-tblcnt; -2"Error: No tables defined in schema file, exitin
 // Display table names, schemas and counts in the output
 displayschema:{-1"Loading schema for: ", string x; show value x;-1"\n"}'[key counts]
 displayschema[];
+-1 raze "Assumptions:\nNumber of distinct values: ", string params[`distincts], "\nAverage string length: ", string params[`avgsl];
 
 // Global Guesstimates
 
@@ -44,11 +47,11 @@ calcsize:{[c;s;a] `long$2 xexp ceiling 2 xlog 16+a+s*c};
 
 // Function to calculate the overhead of the grouped attribute
 // All other attributes are assumed to have zero overhead
-attrsize:{$[`g=attr x;sum (calcsize[distincts;typesize x;0];calcsize[distincts;8;0];distincts * vectorsize[8;ceiling y%distincts]);0]};
+attrsize:{$[`g=attr x;sum (calcsize[distincts;typesize x;0];calcsize[distincts;ptrsize;0];distincts * vectorsize[ptrsize;ceiling y%distincts]);0]};
 
 // Determine column type. If 0h, calculate total pointer size and column size using
 // the assumed avgstrlength value
-vectorsize:{$[0h=type x; calcsize[y;8;0] + y*calcsize[avgstrlength;1;0];calcsize[y;typesize x;attrsize[x;y]]]};
+vectorsize:{$[0h=type x; calcsize[y;ptrsize;0] + y*calcsize[avgstrlength;1;0];calcsize[y;typesize x;attrsize[x;y]]]};
 
 // Raw size of atoms according to type, type 20h->76h have 4 bytes pointer size
 typesize:{4^0N 1 16 0N 1 2 4 8 4 8 1 8 8 4 4 8 8 4 4 4 abs type x};
@@ -57,7 +60,7 @@ tablesize:{[t;c] vectorsize[cols t;count cols t] + sum vectorsize[;c] each value
 
 // Calculate table sizes
 dbestimate:{
-	-1"\nSize per table in MB:"; 
+	-1 raze "\nSize per table in MB: "; 
 	show r:([tbl:key counts] counts:value counts; size:`long$(tablesize'[value each key counts;value counts])%2 xexp 20);
 	
 	-1"Total size in MB:";
