@@ -1,0 +1,6 @@
+table,col,coltype,isnested,nestedcount,tablecount
+trade,time,timestamp,0,0,1000000
+trade,sym,symbol,0,0,1000000
+trade,price,float,0,0,1000000
+trade,size,int,0,0,1000000
+trade,orderid,char,1,12,1000000
