@@ -1,0 +1,91 @@
+{{!-- q-doc Code Documentation Generator --}}
+{{!--  Handlebars Template for Documentation --}}
+{{!-- Copyright (C) 2014 Jaskirat M.S. Rajasansir --}}
+{{!-- License BSD, see LICENSE for details --}}
+
+{{#qdoc}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><a name="{{id}}"><tt>{{func}}{{arguments}}</tt></a></h3>
+    </div>
+
+    <div class="panel-body">
+        {{#if comments}}
+        <p>{{{comments}}}</p>
+        {{/if}}
+
+        {{#if deprecated}}
+        <p>
+            <strong class="warning">Deprecation:</strong>
+            {{{deprecated}}}
+        </p>
+        {{/if}}
+
+        {{#if param}}
+        <p>
+            <strong>Parameters:</strong>
+        </p>
+
+        <ul style="list-style-type: none">
+            {{#each param}}
+                <li>
+                    <tt>{{name}}</tt> : <em>{{types}}</em>
+                    {{#if description}}
+                    <ul>
+                        <li>{{{description}}}</li>
+                    </ul>
+                    {{/if}}
+                </li>
+            {{/each}}
+        </ul>
+        {{/if}}
+
+        {{#if returns.types}}
+        <p>
+            <strong>Returns:</strong>
+        </p>
+
+        <ul style="list-style-type: none">
+            <li>
+                <em>{{returns.types}}</em>
+                {{#if returns.description}}
+                <ul> 
+                    <li>{{{returns.description}}}</li>
+                </ul>
+                {{/if}}
+            </li>
+        </ul>
+        {{/if}}
+
+        {{#if throws}}
+        <p>
+            <strong>Throws:</strong>
+        </p>
+
+        <ul style="list-style-type: none">
+            {{#each throws}}
+                <li><tt>{{exception}}</tt> : {{{description}}}</li>
+            {{/each}}
+        </ul>
+        {{/if}}
+
+        {{#if see}}
+        <p>
+            <strong>See Also:</strong>
+        </p>
+
+        <ul>
+            {{#each see}}
+                <li>
+                    {{#if id}}
+                        <a href="#{{id}}"><tt>{{linkOrFunc}}</tt></a>
+                    {{else}}
+                        {{{linkOrFunc}}}
+                    {{/if}}
+                </li>
+            {{/each}}
+        </ul>
+        {{/if}}
+    </div>
+</div>
+{{/qdoc}}
